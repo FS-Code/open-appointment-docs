@@ -1,15 +1,10 @@
 ---
 title: API Reference
 
-language_tabs: # must be one of https://github.com/rouge-ruby/rouge/wiki/List-of-supported-languages-and-lexers
-  - shell
-  - ruby
-  - python
-  - javascript
+language_tabs:
+  - json
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/slatedocs/slate'>Documentation Powered by Slate</a>
 
 includes:
   - errors
@@ -25,221 +20,510 @@ meta:
 
 # Introduction
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+This is documentation for Open Appointment. Open Appointment is open-source appointment reservation system written by "Code Marathon 2023" participants.
 
-We have language bindings in Shell, Ruby, Python, and JavaScript! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+# Authorization
 
-This example API documentation page was created with [Slate](https://github.com/slatedocs/slate). Feel free to edit it and use it as a base for your own API's documentation.
+## Login
 
-# Authentication
-
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
-
-```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here" \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-```
-
-> Make sure to replace `meowmeowmeow` with your API key.
-
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
-
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
-
-`Authorization: meowmeowmeow`
-
-<aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
-</aside>
-
-# Kittens
-
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
-
-```shell
-curl "http://example.com/api/kittens" \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
-```
-
-> The above command returns JSON structured like this:
+> Request:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
+{
+  "email": "user1@example.org",
+  "password": "12345678"
+}
+```
+
+> Response:
+
+```json
+{
+  "data": {
+    "user": {
+      "id": 1,
+      "email": "user1@example.org"
+    },
+    "token": "{JWT token}"
   }
-]
-```
-
-This endpoint retrieves all kittens.
-
-### HTTP Request
-
-`GET http://example.com/api/kittens`
-
-### Query Parameters
-
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
-
-<aside class="success">
-Remember — a happy kitten is an authenticated kitten!
-</aside>
-
-## Get a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2" \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
-```
-
-> The above command returns JSON structured like this:
-
-```json
-{
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
+This endpoint allows user to login and obtain an JWT token. JWT token is required for later user-specific actions.
 
 ### HTTP Request
 
-`GET http://example.com/kittens/<ID>`
+`POST /api/login`
 
-### URL Parameters
+### Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
+| Parameter | Type   | Description                      |
+|-----------|--------|----------------------------------|
+| email     | string | Email address of registered user |
+| password  | string | Password of registered user      |
 
-## Delete a Specific Kitten
+## Register
 
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2" \
-  -X DELETE \
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
+> Request:
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+  "email": "email@example.org",
+  "password": "12345678"
 }
 ```
 
-This endpoint deletes a specific kitten.
+> Response:
+
+```json
+{
+  "data": {
+    "user": {
+      "id": 1,
+      "email": "user1@example.org"
+    },
+    "token": "{JWT token}"
+  }
+}
+```
+
+This endpoint allows user to register and obtain an JWT token. JWT token is required for later user-specific actions.
 
 ### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
+`POST /api/register`
 
-### URL Parameters
+### Parameters
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+| Parameter | Type   | Description   |
+|-----------|--------|---------------|
+| email     | string | Email address |
+| password  | string | Password      |
 
+## Reset password
+
+> Request:
+
+```json
+{
+  "email": "user1@example.org"
+}
+```
+
+> Response:
+
+```json
+{
+  "data": {}
+}
+```
+
+This endpoint allows user to get reset password link.
+
+`POST /api/get-reset-password-link`
+
+### Parameters
+
+| Parameter | Type   | Description   |
+|-----------|--------|---------------|
+| email     | string | Email address |
+
+## Get Appointments
+
+> Request:
+
+```json
+{
+  "cursor": 5
+}
+```
+
+> Response:
+
+```json
+{
+  "data": {
+    "appointments": [
+      {
+        "id": 5,
+        "service": {
+          "id": 1,
+          "name": "Actor Training",
+          "location": "Hollywood",
+          "details": "Get an hourly actor training from Jim Carry",
+          "duration": 3600,
+          "business_hours": {
+            "monday": {
+              "start": "10:00",
+              "ends": "19:00"
+            },
+            "tuesday": {
+              "start": "10:00",
+              "ends": "19:00"
+            },
+            "wednesday": {
+              "start": "10:00",
+              "ends": "19:00"
+            },
+            "thursday": {
+              "start": "10:00",
+              "ends": "19:00"
+            },
+            "friday": {
+              "start": "10:00",
+              "ends": "19:00"
+            },
+            "saturday": null,
+            "sunday": null
+          },
+          "buffer": {
+            "before": 0,
+            "after": 1800
+          }
+        },
+        "customer": {
+          "name": "Ulrich Nielsen",
+          "email": "customer1@example.org"
+        },
+        "starts_at": "",
+        "ends_at": "",
+        "created_at": ""
+      }
+    ],
+    "cursor": 16
+  }
+}
+```
+
+This endpoint fetches current user's appointments from database. Returns `cursor` null if there is not next page, otherwise id of first appointment from the next page
+
+`POST /api/get-appointments`
+
+### Parameters
+
+| Parameter | Type       | Description                                                   |
+|-----------|------------|---------------------------------------------------------------|
+| cursor    | id or null | ID of appointment to start from. Send null for the first time |
+
+## Create Appointment
+
+> Request:
+
+```json
+{
+  "service_id": 1,
+  "customer": {
+    "name": "Ulrich Nielsen",
+    "email": "customer1@example.org"
+  },
+  "starts_at": "",
+  "ends_at": "",
+  "created_at": ""
+}
+```
+
+> Response:
+
+```json
+{
+  "data": {
+    
+  }
+}
+```
+
+This endpoint allows customers to book an appointment
+
+`POST /api/create-appointment`
+
+### Parameters
+
+| Parameter   | Type                   | Description                          |
+|-------------|------------------------|--------------------------------------|
+| service_id  | int                    | ID of service                        |
+| customer    | [#customer](#customer) |                                      |
+| starts_at   | timestamp              | Starting timestamp of an appointment |
+| ends_at     | timestamp              | Ending timestamp of an appointment   |
+
+### customer
+
+| Parameter | Type   | Description       |
+|-----------|--------|-------------------|
+| name      | string | Name of customer  |
+| email     | string | Email of customer |
+
+## Get Services
+
+> Request:
+
+```json
+{
+  "cursor": null
+}
+```
+
+> Response:
+
+```json
+{
+  "data": {
+    "services": [
+      {
+        "id": 1,
+        "name": "Actor Training",
+        "location": "Hollywood",
+        "details": "Get an hourly actor training from Jim Carry",
+        "duration": 3600,
+        "business_hours": {
+          "monday": {
+            "start": "10:00",
+            "ends": "19:00"
+          },
+          "tuesday": {
+            "start": "10:00",
+            "ends": "19:00"
+          },
+          "wednesday": {
+            "start": "10:00",
+            "ends": "19:00"
+          },
+          "thursday": {
+            "start": "10:00",
+            "ends": "19:00"
+          },
+          "friday": {
+            "start": "10:00",
+            "ends": "19:00"
+          },
+          "saturday": null,
+          "sunday": null
+        },
+        "buffer": {
+          "before": 0,
+          "after": 1800
+        }
+      }
+    ],
+    "cursor": 11
+  }
+}
+```
+
+This endpoint fetches current user's services from database. Returns `cursor` null if there is not next page, otherwise `id` of first service from the next page
+
+`POST /api/get-services`
+
+### Parameters
+
+| Parameter | Type       | Description                                               |
+|-----------|------------|-----------------------------------------------------------|
+| `cursor`  | id or null | ID of service to start from. Send null for the first time |
+
+## Create Service
+
+> Request:
+
+```json
+{
+  "name": "Actor Training",
+  "location": "Hollywood",
+  "details": "Get an hourly actor training from Jim Carry",
+  "duration": 3600,
+  "business_hours": {
+    "monday": {
+      "start": "10:00",
+      "ends": "19:00"
+    },
+    "tuesday": {
+      "start": "10:00",
+      "ends": "19:00"
+    },
+    "wednesday": {
+      "start": "10:00",
+      "ends": "19:00"
+    },
+    "thursday": {
+      "start": "10:00",
+      "ends": "19:00"
+    },
+    "friday": {
+      "start": "10:00",
+      "ends": "19:00"
+    },
+    "saturday": null,
+    "sunday": null
+  },
+  "buffer": {
+    "before": 0,
+    "after": 1800
+  }
+}
+```
+
+> Response:
+
+```json
+{
+  "data": {
+    "id": 1
+  }
+}
+```
+
+This endpoint allows to create new service.
+
+`POST /api/create-service`
+
+### Parameters
+
+| Parameter      | Type                               | Description                          |
+|----------------|------------------------------------|--------------------------------------|
+| name           | string                             | Service's name                       |
+| location       | string                             | Location of service                  |
+| details        | string                             | Notes about service, can be empty    |
+| duration       | int                                | Duration of service in seconds       |
+| business_hours | [#business_hours](#business_hours) | Working hours of service             |
+| buffer         | [#buffer](#buffer)                 | Waiting time before or after service |
+
+### business_hours
+
+| Parameter | Type                         | Description           |
+|-----------|------------------------------|-----------------------|
+| monday    | [#weekday](#weekday) or null | null if it is day-off |
+| tuesday   | [#weekday](#weekday) or null | null if it is day-off |
+| wednesday | [#weekday](#weekday) or null | null if it is day-off |
+| thursday  | [#weekday](#weekday) or null | null if it is day-off |
+| friday    | [#weekday](#weekday) or null | null if it is day-off |
+| saturday  | [#weekday](#weekday) or null | null if it is day-off |
+| sunday    | [#weekday](#weekday) or null | null if it is day-off |
+
+### weekday
+
+| Parameter | Type   | Description                                   |
+|-----------|--------|-----------------------------------------------|
+| starts    | string | starting time of working hours, in H:i format |
+| ends      | string | ending time of working hours, in H:i format   |
+
+### buffer
+| Parameter | Type | Description                              |
+|-----------|------|------------------------------------------|
+| before    | int  | waiting time before a service in seconds |
+| after     | int  | waiting time after a service in seconds  |
+
+## Edit Service
+
+> Request:
+
+```json
+{
+  "id": 1,
+  "name": "Actor Training",
+  "location": "Hollywood",
+  "details": "Get two hourly actor training from Jim Carry",
+  "duration": 7200,
+  "business_hours": {
+    "monday": {
+      "start": "11:00",
+      "ends": "20:00"
+    },
+    "tuesday": {
+      "start": "11:00",
+      "ends": "20:00"
+    },
+    "wednesday": {
+      "start": "11:00",
+      "ends": "20:00"
+    },
+    "thursday": {
+      "start": "11:00",
+      "ends": "20:00"
+    },
+    "friday": null,
+    "saturday": null,
+    "sunday": null
+  },
+  "buffer": {
+    "before": 0,
+    "after": 0
+  }
+}
+```
+
+> Response:
+
+```json
+{
+  "data": {}
+}
+```
+
+This endpoint allows to edit existing service.
+
+`POST /api/edit-service`
+
+### Parameters
+
+| Parameter      | Type                               | Description                          |
+|----------------|------------------------------------|--------------------------------------|
+| id             | int                                | ID of existing service               |
+| name           | string                             | Service's name                       |
+| location       | string                             | Location of service                  |
+| details        | string                             | Notes about service, can be empty    |
+| duration       | int                                | Duration of service in seconds       |
+| business_hours | [#business_hours](#business_hours) | Working hours of service             |
+| buffer         | [#buffer](#buffer)                 | Waiting time before or after service |
+
+### business_hours
+
+| Parameter | Type                         | Description           |
+|-----------|------------------------------|-----------------------|
+| monday    | [#weekday](#weekday) or null | null if it is day-off |
+| tuesday   | [#weekday](#weekday) or null | null if it is day-off |
+| wednesday | [#weekday](#weekday) or null | null if it is day-off |
+| thursday  | [#weekday](#weekday) or null | null if it is day-off |
+| friday    | [#weekday](#weekday) or null | null if it is day-off |
+| saturday  | [#weekday](#weekday) or null | null if it is day-off |
+| sunday    | [#weekday](#weekday) or null | null if it is day-off |
+
+### weekday
+
+| Parameter | Type   | Description                                   |
+|-----------|--------|-----------------------------------------------|
+| starts    | string | starting time of working hours, in H:i format |
+| ends      | string | ending time of working hours, in H:i format   |
+
+### buffer
+| Parameter | Type | Description                              |
+|-----------|------|------------------------------------------|
+| before    | int  | waiting time before a service in seconds |
+| after     | int  | waiting time after a service in seconds  |
+
+## Delete Services
+
+> Request:
+
+```json
+{
+  "ids": [1]
+}
+```
+
+> Response:
+
+```json
+{
+  "data": {}
+}
+```
+
+This endpoint allows to delete existing services.
+
+`POST /api/delete-service`
+
+### Parameters
+
+| Parameter | Type  | Description                   |
+|-----------|-------|-------------------------------|
+| ids       | int[] | ID array of existing services |
+
+## Save Settings
