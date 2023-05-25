@@ -359,7 +359,7 @@
                     <a href="#create-appointment" class="toc-h2 toc-link" data-title="Create Appointment">Create Appointment</a>
                   </li>
                   <li>
-                    <a href="#delete-appointment" class="toc-h2 toc-link" data-title="Delete Appointment">Delete Appointment</a>
+                    <a href="#delete-appointments" class="toc-h2 toc-link" data-title="Delete Appointments">Delete Appointments</a>
                   </li>
               </ul>
           </li>
@@ -387,12 +387,26 @@
     </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
       </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
       </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user1@example.org"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{JWT token}"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint allows user to login and obtain an JWT token. JWT token is required for later user-specific actions.</p>
+<p>This endpoint allows user to login</p>
+
+<hr>
+
+<ol>
+<li>Staff enters email &amp; password and clicks &quot;Login&quot; button.</li>
+<li>Frontend sends these values to <code>/api/login</code>.</li>
+<li>Backend checks if email &amp; password is correct:
+
+<ol>
+<li>On success: Backend should generate unique token and store it in cookie &amp; database too. So later auth-required endpoints can be requested. If response contains user object then frontend should navigate to <code>/dashboard</code>.</li>
+<li>On failure: Should return error message (&quot;Email or password is incorrect&quot;)</li>
+</ol></li>
+</ol>
+
+<hr>
 <h3 id='http-request'>HTTP Request</h3>
 <p><code>POST /api/login</code></p>
 <h3 id='parameters'>Parameters</h3>
@@ -431,12 +445,26 @@
     </span><span class="nl">"user"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
       </span><span class="nl">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
       </span><span class="nl">"email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"user1@example.org"</span><span class="w">
-    </span><span class="p">},</span><span class="w">
-    </span><span class="nl">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"{JWT token}"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
   </span><span class="p">}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint allows user to register and obtain an JWT token. JWT token is required for later user-specific actions.</p>
+<p>This endpoint allows user to register.</p>
+
+<hr>
+
+<ol>
+<li>Staff enters email, password &amp; password repeat and clicks &quot;Create Account&quot; button.</li>
+<li>Frontend sends these values (except password repeat) to <code>/api/register</code>.</li>
+<li>Backend checks if email does not already exist and password meets requirements:
+
+<ol>
+<li>On success: Backend should create a staff and also generate token to store it in cookie &amp; database . So later auth-required endpoints can be requested. If response contains user object then frontend should navigate to <code>/dashboard</code>.</li>
+<li>On failure: Should return error message (&quot;Email is already exists&quot;, &quot;Password does not meet requirements&quot;)</li>
+</ol></li>
+</ol>
+
+<hr>
 <h3 id='http-request-2'>HTTP Request</h3>
 <p><code>POST /api/register</code></p>
 <h3 id='parameters-2'>Parameters</h3>
@@ -923,7 +951,7 @@
 </span></code></pre></div>
 <p>This endpoint allows to delete existing services.</p>
 
-<p><code>POST /api/delete-service</code></p>
+<p><code>POST /api/delete-services</code></p>
 <h3 id='parameters-7'>Parameters</h3>
 <table><thead>
 <tr>
@@ -1201,7 +1229,7 @@ When returning the timeslots, existing appointments also should be considered. W
 <td>Email of customer</td>
 </tr>
 </tbody></table>
-<h2 id='delete-appointment'>Delete Appointment</h2>
+<h2 id='delete-appointments'>Delete Appointments</h2>
 <blockquote>
 <p>Request:</p>
 </blockquote>
@@ -1216,9 +1244,9 @@ When returning the timeslots, existing appointments also should be considered. W
   </span><span class="nl">"data"</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre></div>
-<p>This endpoint allows to delete booked appointments.</p>
+<p>This endpoint allows to delete appointments.</p>
 
-<p><code>POST /api/delete-appointment</code></p>
+<p><code>POST /api/delete-appointments</code></p>
 
       </div>
       <div class="dark-box">
