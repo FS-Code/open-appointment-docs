@@ -43,13 +43,23 @@ This is documentation for Open Appointment. Open Appointment is open-source appo
     "user": {
       "id": 1,
       "email": "user1@example.org"
-    },
-    "token": "{JWT token}"
+    }
   }
 }
 ```
 
-This endpoint allows user to login and obtain an JWT token. JWT token is required for later user-specific actions.
+This endpoint allows user to login
+
+---
+
+1. Staff enters email & password and clicks "Login" button.
+2. Frontend sends these values to `/api/login`.
+3. Backend checks if email & password is correct:
+   1. On success: Backend should generate unique token and store it in cookie & database too. So later auth-required endpoints can be requested. If response contains user object then frontend should navigate to `/dashboard`.
+   2. On failure: Should return error message ("Email or password is incorrect")
+
+---
+
 
 ### HTTP Request
 
@@ -81,13 +91,22 @@ This endpoint allows user to login and obtain an JWT token. JWT token is require
     "user": {
       "id": 1,
       "email": "user1@example.org"
-    },
-    "token": "{JWT token}"
+    }
   }
 }
 ```
 
-This endpoint allows user to register and obtain an JWT token. JWT token is required for later user-specific actions.
+This endpoint allows user to register.
+
+---
+
+1. Staff enters email, password & password repeat and clicks "Create Account" button.
+2. Frontend sends these values (except password repeat) to `/api/register`.
+3. Backend checks if email does not already exist and password meets requirements:
+   1. On success: Backend should create a staff and also generate token to store it in cookie & database . So later auth-required endpoints can be requested. If response contains user object then frontend should navigate to `/dashboard`.
+   2. On failure: Should return error message ("Email is already exists", "Password does not meet requirements")
+
+---
 
 ### HTTP Request
 
@@ -396,7 +415,7 @@ This endpoint allows to edit existing service.
 
 This endpoint allows to delete existing services.
 
-`POST /api/delete-service`
+`POST /api/delete-services`
 
 ### Parameters
 
@@ -630,7 +649,7 @@ This endpoint allows customers to book an appointment
 | name      | string | Name of customer  |
 | email     | string | Email of customer |
 
-## Delete Appointment
+## Delete Appointments
 
 > Request:
 
@@ -648,6 +667,6 @@ This endpoint allows customers to book an appointment
 }
 ```
 
-This endpoint allows to delete booked appointments.
+This endpoint allows to delete appointments.
 
-`POST /api/delete-appointment`
+`POST /api/delete-appointments`
