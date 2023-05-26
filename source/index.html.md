@@ -520,64 +520,46 @@ This endpoint fetches current user's appointments from database. Returns `cursor
   "dates": {
     "2023-05-24": [
       {
-        "buffer_before": 0,
-        "buffer_after": 1800,
         "start_time": "10:00",
         "end_time": "11:00"
       },
       {
-        "buffer_before": 0,
-        "buffer_after": 1800,
         "start_time": "11:00",
         "end_time": "12:00"
       },
       "...",
       {
-        "buffer_before": 0,
-        "buffer_after": 1800,
         "start_time": "18:00",
         "end_time": "19:00"
       }
     ],
     "2023-05-25": [
       {
-        "buffer_before": 0,
-        "buffer_after": 1800,
         "start_time": "11:30",
         "end_time": "12:30"
       },
       {
-        "buffer_before": 0,
-        "buffer_after": 1800,
         "start_time": "12:30",
         "end_time": "13:30"
       },
       "...",
       {
-        "buffer_before": 0,
-        "buffer_after": 1800,
         "start_time": "17:30",
         "end_time": "18:30"
       }
     ],
-    "dates_bla_bla": "...",
+    "...": "...",
     "2023-05-31": [
       {
-        "buffer_before": 0,
-        "buffer_after": 1800,
         "start_time": "11:30",
         "end_time": "12:30"
       },
       {
-        "buffer_before": 0,
-        "buffer_after": 1800,
         "start_time": "12:30",
         "end_time": "13:30"
       },
       "...",
       {
-        "buffer_before": 0,
-        "buffer_after": 1800,
         "start_time": "17:30",
         "end_time": "18:30"
       }
@@ -635,12 +617,13 @@ This endpoint allows customers to book an appointment
 
 ### Parameters
 
-| Parameter   | Type                   | Description                          |
-|-------------|------------------------|--------------------------------------|
-| service_id  | int                    | ID of service                        |
-| customer    | [#customer](#customer) |                                      |
-| starts_at   | timestamp              | Starting timestamp of an appointment |
-| ends_at     | timestamp              | Ending timestamp of an appointment   |
+| Parameter  | Type                   | Description                                |
+|------------|------------------------|--------------------------------------------|
+| service_id | int                    | ID of service                              |
+| customer   | [#customer](#customer) |                                            |
+| starts_at  | timestamp              | Starting timestamp of an appointment       |
+| ends_at    | timestamp              | Ending timestamp of an appointment         |
+| created_at | timestamp              | Timestamp of date when appointment created |
 
 ### customer
 
